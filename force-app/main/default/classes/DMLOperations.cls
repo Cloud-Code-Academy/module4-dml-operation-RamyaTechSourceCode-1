@@ -84,7 +84,7 @@ public with sharing class DMLOperations {
      */
     public static void updateContactLastName(Id contactId, String newLastName) {
         // Retrieve the Contact from the database
-        contact con = [SELECT Id FROM Contact WHERE Id = :contactId];
+        contact con = [SELECT Id FROM Contact WHERE Id = :contactId WITH SECURITY_ENFORCED];
 
         // Update the Contact's last name
         con.LastName = newLastName;
@@ -101,7 +101,7 @@ public with sharing class DMLOperations {
      */
     public static void updateOpportunityStage(Id oppId, String newStage) {
         // Retrieve the Opportunity from the database
-        Opportunity opp = [SELECT Id FROM Opportunity WHERE Id = :oppId];
+        Opportunity opp = [SELECT Id FROM Opportunity WHERE Id = :oppId WITH SECURITY_ENFORCED];
 
         // Update the Opportunity's stage
         opp.StageName = newStage;
@@ -119,7 +119,7 @@ public with sharing class DMLOperations {
      */
     public static void updateAccountFields(Id accountId, String newName, String newIndustry) {
         // Query the account
-        Account acc= [SELECT Id FROM Account WHERE Id = :accountId];
+        Account acc= [SELECT Id FROM Account WHERE Id = :accountId WITH SECURITY_ENFORCED];
 
         // Update the Account with the given Id with the new name and industry
         acc.Name = newName;
@@ -187,7 +187,7 @@ public with sharing class DMLOperations {
 	 */
 	public static Account upsertAccount(String accountName) {
 		// Query for the Account
-		List<Account> accounts = [SELECT Id FROM Account WHERE Name = :accountName];
+		List<Account> accounts = [SELECT Id FROM Account WHERE Name = :accountName WITH SECURITY_ENFORCED];
         if(accounts.size() > 0) {
                 for(Account a:accounts)
                 {
@@ -217,7 +217,7 @@ public with sharing class DMLOperations {
         for(Contact con : contactsToUpsert)
         {
             // Extract the Account Name from Contact's LastName
-            List<Account> acc = [SELECT ID FROM Account WHERE name =:con.LastName];
+            List<Account> acc = [SELECT ID FROM Account WHERE name =:con.LastName WITH SECURITY_ENFORCED];
             // Get the account based on the name or create one if it doesn't exist
             if(acc.size() == 0)
             {
